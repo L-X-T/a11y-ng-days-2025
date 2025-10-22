@@ -1,5 +1,6 @@
 import { Component, DestroyRef, effect, inject, input, model } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -20,6 +21,7 @@ export class FlightEditComponent {
   private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
   private readonly flightService = inject(FlightService);
+  private readonly title = inject(Title);
   private readonly router = inject(Router);
 
   protected flight$?: Observable<Flight>;
@@ -64,7 +66,10 @@ export class FlightEditComponent {
 
   private readonly flightInputEffect = effect(() => this.patchFormValue(this.flight() as Flight));
   private readonly flightParamEffect = effect(() => {
-    this.flight$ = this.flightService.findById('' + this.id());
+    const id = this.id();
+    this.title.setTitle(`Edit Flight #${id} - NG A11y`);
+
+    this.flight$ = this.flightService.findById('' + id);
     this.flight$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (flight) => {
         this.flight.set(flight);

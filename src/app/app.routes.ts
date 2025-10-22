@@ -21,12 +21,14 @@ export const appRoutes: Route[] = [
   {
     path: 'flights',
     children: flightRoutes,
+    title: 'Flights',
     // loadChildren: () => import('./flights/flights.routes').then((f) => f.flightRoutes),
   },
 
   {
     path: 'charts',
     component: ChartsComponent,
+    title: 'Charts',
   },
 
   /*{
