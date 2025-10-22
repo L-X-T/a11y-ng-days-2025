@@ -1,6 +1,16 @@
-import { Component, computed, DestroyRef, effect, ElementRef, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  ElementRef,
+  inject,
+  signal,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -30,8 +40,10 @@ import { FlightValidationErrorsComponent } from '../flight-validation-errors/fli
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FlightSearchComponent {
-  protected from = 'Graz';
-  protected to = 'Hamburg';
+  private readonly flightSearchForm = viewChild.required<NgForm>('flightSearchForm');
+
+  protected from = '';
+  protected to = '';
   protected hasSearched = false;
 
   protected minLength = 3;
@@ -67,6 +79,11 @@ export class FlightSearchComponent {
   }
 
   protected onSearch(): void {
+    if (this.flightSearchForm().invalid) {
+      this.flightSearchForm().form.markAllAsTouched();
+      return;
+    }
+
     // 1. my observable
     const flights$ = this.flightService.find(this.from, this.to);
 
