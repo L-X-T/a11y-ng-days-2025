@@ -7,17 +7,20 @@ import { Component, DOCUMENT, inject } from '@angular/core';
 export class NavbarComponent {
   private readonly document = inject(DOCUMENT);
 
-  protected sidebarVisible = false;
+  protected isSidebarVisible = false;
 
   protected sidebarToggle(): void {
     const body = this.document.getElementsByTagName('body')[0];
+    const sidebar = this.document.getElementsByTagName('app-sidebar')[0];
 
-    if (!this.sidebarVisible) {
+    if (!this.isSidebarVisible) {
       body.classList.add('nav-open');
-      this.sidebarVisible = true;
+      sidebar.setAttribute('aria-expanded', 'true');
+      this.isSidebarVisible = true;
     } else {
       body.classList.remove('nav-open');
-      this.sidebarVisible = false;
+      sidebar.setAttribute('aria-expanded', 'false');
+      this.isSidebarVisible = false;
     }
   }
 }

@@ -2,7 +2,12 @@
   <div class="container-fluid">
     <div class="navbar-wrapper">
       <div class="navbar-toggle">
-        <button class="navbar-toggler" type="button" (click)="sidebarToggle()">
+        <button
+          aria-label="nav toggle"
+          class="navbar-toggler"
+          type="button"
+          [attr.aria-pressed]="isSidebarVisible"
+          (click)="sidebarToggle()">
           <span class="navbar-toggler-bar bar1"></span>
           <span class="navbar-toggler-bar bar2"></span>
           <span class="navbar-toggler-bar bar3"></span>
